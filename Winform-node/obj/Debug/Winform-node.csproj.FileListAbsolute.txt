@@ -20,3 +20,16 @@ D:\projects-ltia\teste-mongo-csharp\Winform-node\Winform-node\obj\Debug\Winform-
 D:\projects-ltia\csharp-mongodb\Winform-node\bin\Debug\Winform-node.exe.config
 D:\projects-ltia\csharp-mongodb\Winform-node\obj\Debug\Winform-node.exe
 D:\projects-ltia\csharp-mongodb\Winform-node\obj\Debug\Winform-node.pdb
+D:\projects-ltia\csharp-mongodb\Winform-node\bin\Debug\Winform-node.exe
+D:\projects-ltia\csharp-mongodb\Winform-node\bin\Debug\Winform-node.pdb
+D:\projects-ltia\csharp-mongodb\Winform-node\bin\Debug\MongoDB.Bson.dll
+D:\projects-ltia\csharp-mongodb\Winform-node\bin\Debug\MongoDB.Driver.Core.dll
+D:\projects-ltia\csharp-mongodb\Winform-node\bin\Debug\MongoDB.Driver.dll
+D:\projects-ltia\csharp-mongodb\Winform-node\bin\Debug\MongoDB.Driver.Legacy.dll
+D:\projects-ltia\csharp-mongodb\Winform-node\bin\Debug\MongoDB.Bson.xml
+D:\projects-ltia\csharp-mongodb\Winform-node\bin\Debug\MongoDB.Driver.xml
+D:\projects-ltia\csharp-mongodb\Winform-node\bin\Debug\MongoDB.Driver.Legacy.xml
+D:\projects-ltia\csharp-mongodb\Winform-node\obj\Debug\Winform-node.csprojResolveAssemblyReference.cache
+D:\projects-ltia\csharp-mongodb\Winform-node\obj\Debug\Winform_node.Form1.resources
+D:\projects-ltia\csharp-mongodb\Winform-node\obj\Debug\Winform_node.Properties.Resources.resources
+D:\projects-ltia\csharp-mongodb\Winform-node\obj\Debug\Winform-node.csproj.GenerateResource.Cache
