@@ -40,13 +40,13 @@ namespace Winform_node
             //mongo.StartInfo.RedirectStandardInput = true;
             //mongo.StartInfo. = "mongod "; //path to mongo    
 
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.UseShellExecute = false;
-            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.FileName = "mongod";
-            startInfo.Arguments = mongoArg + " mongod";
-            mongo.StartInfo = startInfo;
-            mongo.Start();
+            //ProcessStartInfo startInfo = new ProcessStartInfo();
+            //startInfo.UseShellExecute = false;
+            ////startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            //startInfo.FileName = "mongod";
+            //startInfo.Arguments = mongoArg + " mongod";
+            //mongo.StartInfo = startInfo;
+            //mongo.Start();
 
             //label2.Show();
 
