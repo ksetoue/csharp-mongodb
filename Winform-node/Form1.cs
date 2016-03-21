@@ -20,12 +20,34 @@ namespace Winform_node
     public partial class Form1 : Form
     {
         Process node = new Process();
-        Process mongo = new Process();
+        Process mongo;
         string nodeArg = "C:\\node\\mongobase\\index.js";
         string mongoArg = "C:\\Program Files\\MongoDB\\Server\\3.2\\bin\\mongod.exe";
 
 
         BsonDocument person2;
+
+        public void StartMongo()
+        {
+            ProcessStartInfo si = new ProcessStartInfo();
+            si.UseShellExecute = false;
+            si.CreateNoWindow = true;
+            si.FileName = "Mongod.exe";
+            mongo = Process.Start(si);
+        }
+
+        public void StopMongo()
+        {
+            try
+            {
+                mongo.Close();
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show("Error stopping Mongod.exe");
+            }
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -33,6 +55,7 @@ namespace Winform_node
         
         private void btnMongo_Click(object sender, EventArgs e)
         {
+            Process teste = Process.Start("Mongod.exe");
 
             //mongo.StartInfo.UseShellExecute = true;
             //mongo.StartInfo.RedirectStandardOutput = true;
@@ -135,6 +158,15 @@ namespace Winform_node
             label1.Text = "number of documents removed: " + result.DocumentsAffected.ToString();
             label1.Show();
             //System.Console.WriteLine("number of documents removed: " + result.DocumentsAffected);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo si = new ProcessStartInfo();
+            si.UseShellExecute = false;
+            si.CreateNoWindow = true;
+            si.FileName = "Mongod.exe";
+            Process p = Process.Start(si);
         }
     }
 }

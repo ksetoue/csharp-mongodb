@@ -33,3 +33,8 @@ D:\projects-ltia\csharp-mongodb\Winform-node\obj\Debug\Winform-node.csprojResolv
 D:\projects-ltia\csharp-mongodb\Winform-node\obj\Debug\Winform_node.Form1.resources
 D:\projects-ltia\csharp-mongodb\Winform-node\obj\Debug\Winform_node.Properties.Resources.resources
 D:\projects-ltia\csharp-mongodb\Winform-node\obj\Debug\Winform-node.csproj.GenerateResource.Cache
+C:\Users\vinif\Source\Repos\csharp-mongodb\Winform-node\bin\Debug\Winform-node.exe.config
+C:\Users\vinif\Source\Repos\csharp-mongodb\Winform-node\obj\Debug\Winform-node.csprojResolveAssemblyReference.cache
+C:\Users\vinif\Source\Repos\csharp-mongodb\Winform-node\obj\Debug\Winform_node.Form1.resources
+C:\Users\vinif\Source\Repos\csharp-mongodb\Winform-node\obj\Debug\Winform_node.Properties.Resources.resources
+C:\Users\vinif\Source\Repos\csharp-mongodb\Winform-node\obj\Debug\Winform-node.csproj.GenerateResource.Cache
