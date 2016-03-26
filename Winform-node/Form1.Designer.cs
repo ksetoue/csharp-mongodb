@@ -50,7 +50,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(59, 84);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(31, 13);
             this.label1.TabIndex = 1;
@@ -70,7 +70,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(249, 83);
+            this.label2.Location = new System.Drawing.Point(634, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 3;
@@ -90,7 +90,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(242, 54);
             this.button1.TabIndex = 5;
-            this.button1.Text = "GET";
+            this.button1.Text = "Update Info";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -100,7 +100,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(242, 53);
             this.button2.TabIndex = 6;
-            this.button2.Text = "MongoStart";
+            this.button2.Text = "Remove All";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 

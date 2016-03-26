@@ -1,39 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MongoDB.Bson;
 using MongoDB.Driver;
-//Additionally, you will frequently add one or more of these using statements:
 using MongoDB.Driver.Builders;
-using MongoDB.Driver.GridFS;
-using MongoDB.Driver.Linq;
 
 namespace Winform_node
 {
     public partial class Form1 : Form
     {
         Process node = new Process();
-        Process mongo;
+        Process mongo = new Process();
         string nodeArg = "C:\\node\\mongobase\\index.js";
-        string mongoArg = "C:\\Program Files\\MongoDB\\Server\\3.2\\bin\\mongod.exe";
-
-
+        MongoDatabase database;
+        MongoClient client;
+        MongoServer server;
         BsonDocument person2;
-
+        MongoCollection<BsonDocument> bankData;
         public void StartMongo()
         {
-            ProcessStartInfo si = new ProcessStartInfo();
-            si.UseShellExecute = false;
-            si.CreateNoWindow = true;
-            si.FileName = "Mongod.exe";
-            mongo = Process.Start(si);
+      
+            ProcessStartInfo procStartInfo = new ProcessStartInfo();               
+            procStartInfo.CreateNoWindow = true;
+            procStartInfo.UseShellExecute = false;
+            procStartInfo.FileName = @"C:\Program Files\MongoDB\Server\3.2\bin\mongod.exe";         
+            mongo = Process.Start(procStartInfo);
+         
         }
 
         public void StopMongo()
@@ -51,11 +44,40 @@ namespace Winform_node
         public Form1()
         {
             InitializeComponent();
+            //Inicia o MongoDB
+            StartMongo();
+            //Conexão com o MongoDB
+            ConnectToMongo();
+            //Lista todas as entradas do banco (só para verificar se está inserindo)
+            SeeAll();
+
+           
         }
-        
+
+        private void  SeeAll()
+        {
+            var data = "";
+            var cursor = bankData.FindAll().ToList();          
+            foreach (var document in cursor)
+            {
+                data += document["first_name"].ToString() +" "+ document["last_name"].ToString() + " " + document["accounts"][0]["account_balance"].ToString() + "\n";
+               
+            }
+            label1.Text = data.ToString();
+            label1.Show();
+        }
+        private void ConnectToMongo()
+        {
+            
+            client = new MongoClient("mongodb://127.0.0.1:27017/test"); // connect to localhost
+            server = client.GetServer();
+            database = server.GetDatabase("test"); // "test" is the name of the database
+            bankData = database.GetCollection<BsonDocument>("bank_data"); //collection que contem o documento
+        }
+        //insert a person to the db
         private void btnMongo_Click(object sender, EventArgs e)
         {
-            Process teste = Process.Start("Mongod.exe");
+            // Process teste = Process.Start("Mongod.exe");
 
             //mongo.StartInfo.UseShellExecute = true;
             //mongo.StartInfo.RedirectStandardOutput = true;
@@ -79,14 +101,7 @@ namespace Winform_node
             //_database = _server.GetDatabase("vinifig");
             // { "The Process object must have the UseShellExecute property set to false in order to redirect IO streams."}
 
-            //conexao como o MongoDB
-            MongoClient client = new MongoClient("mongodb://127.0.0.1:27017/test"); // connect to localhost
-            MongoServer server = client.GetServer(); 
-            MongoDatabase database = server.GetDatabase("test"); // "test" is the name of the database
-
-            //collection que contem o documento
-            MongoCollection<BsonDocument> bankData = database.GetCollection<BsonDocument>("bank_data");
-            //objeto que contem as informacoes que serao inseridas no db
+            //Object that has the information to be inserted on the db
             BsonDocument person = new BsonDocument {
                 { "first_name", "bla"},
                 { "last_name", "bla"},
@@ -98,9 +113,10 @@ namespace Winform_node
                     }
                 }}
             };
-            //insercao
+            //insert 
             bankData.Insert(person);
             person2 = person;
+
 
             //should be the exact same object we just updated
             BsonDocument newP = bankData.FindOneById(person["_id"]);
@@ -110,9 +126,10 @@ namespace Winform_node
             label2.Show();
             newP["accounts"][0]["account_balance"] = newP["accounts"][0]["account_balance"].AsInt32;
             label2.Text = "bal = " + newP["accounts"][0]["account_balance"].ToString();
+            SeeAll();
             
         }
-
+        //start conection with node
         private void btnnode_Click(object sender, EventArgs e)
         {
             node.StartInfo.UseShellExecute = false;
@@ -126,47 +143,62 @@ namespace Winform_node
             label1.Show();
 
         }
-
+        //increases the last person balance by 100000
         private void button1_Click(object sender, EventArgs e)
         {
 
-            //conexao como o MongoDB
-            MongoClient client = new MongoClient("mongodb://127.0.0.1:27017/test"); // connect to localhost
-            MongoServer server = client.GetServer();
-            MongoDatabase database = server.GetDatabase("test"); // "test" is the name of the database
+            //MongoDB conection
+            ConnectToMongo();
+            var sortBy = SortBy.Descending("date");
+            var query = new QueryDocument();
+            //gets the last record 
+            var cursor = bankData.Find(query).SetSortOrder(SortBy.Descending("_id")).SetLimit(1);
+            person2 = cursor.ElementAt(0);            
+            if (person2 != null)
+            {
+                //increment the last record's balance by 100000                    
+                person2["accounts"][0]["account_balance"] = person2["accounts"][0]["account_balance"].AsInt32 + 200000;
+                bankData.Save(person2);
+                label2.Text = "Successfully updated 1 document.";
+                label2.Show();
 
-            //collection que contem o documento
-            MongoCollection<BsonDocument> bankData = database.GetCollection<BsonDocument>("bank_data");
+                //should be the exact same object we just updated
+                BsonDocument newPerson = bankData.FindOneById(person2["_id"]);
+                //check if the account balance was updated.
+                textBox1.Text = newPerson["first_name"].ToString() + " id = " + person2["_id"].ToString();
+                newPerson["accounts"][0]["account_balance"] = newPerson["accounts"][0]["account_balance"].AsInt32;
+                label2.Text = "bal = " + newPerson["accounts"][0]["account_balance"].ToString();
+                //System.Console.WriteLine(newPerson["accounts"][0]["account_balance"].AsInt32);
 
-            //increment this persons balance by 100000
-            person2["accounts"][0]["account_balance"] = person2["accounts"][0]["account_balance"].AsInt32 + 200000;
-            bankData.Save(person2);
-            label2.Text = "Successfully updated 1 document.";
-            label2.Show();
-
-            //should be the exact same object we just updated
-            BsonDocument newPerson = bankData.FindOneById(person2["_id"]);
-            //check if the account balance was updated.
-            textBox1.Text = newPerson["first_name"].ToString() + " id = " + person2["_id"].ToString();
-            newPerson["accounts"][0]["account_balance"] = newPerson["accounts"][0]["account_balance"].AsInt32;
-            label2.Text = "bal = " + newPerson["accounts"][0]["account_balance"].ToString();
-            //System.Console.WriteLine(newPerson["accounts"][0]["account_balance"].AsInt32);
-
-            //now delete the document we just inserted
-            var query = Query.EQ("_id", newPerson["_id"]);
-            WriteConcernResult result = bankData.Remove(query);
-            label1.Text = "number of documents removed: " + result.DocumentsAffected.ToString();
-            label1.Show();
-            //System.Console.WriteLine("number of documents removed: " + result.DocumentsAffected);
+                //now delete the document we just inserted
+                /*      var query = Query.EQ("_id", newPerson["_id"]);
+                      WriteConcernResult result = bankData.Remove(query);
+                      label1.Text = "number of documents removed: " + result.DocumentsAffected.ToString();
+                      label1.Show();*/
+                SeeAll();
+            }
+            else {
+                label1.Text = "Precisa inserir uma pessoa antes";
+                label1.Show();
+                  
+            }
+            
+          
         }
-
+        //removes all the records
         private void button2_Click(object sender, EventArgs e)
         {
-            ProcessStartInfo si = new ProcessStartInfo();
-            si.UseShellExecute = false;
-            si.CreateNoWindow = true;
-            si.FileName = "Mongod.exe";
-            Process p = Process.Start(si);
+            /*  ProcessStartInfo si = new ProcessStartInfo();
+              si.UseShellExecute = false;
+              si.CreateNoWindow = true;
+              si.FileName = "Mongod.exe";
+              Process p = Process.Start(si);*/
+            //MongoDB conection
+            ConnectToMongo();
+
+            WriteConcernResult result = bankData.Remove(null);
+            label1.Text = "number of documents removed: " + result.DocumentsAffected.ToString();
+            label1.Show();
         }
     }
 }
